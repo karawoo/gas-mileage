@@ -18,7 +18,8 @@ shinyUI(pageWithSidebar(
   mainPanel(
     tabsetPanel(type = "tabs", 
       tabPanel("Plot", plotOutput("mpgplot")), 
-      tabPanel("Summary", tableOutput("mpgsummary"))
+      tabPanel("Summary", tableOutput("mpgsummary")), 
+      tabPanel("MPG over time", plotOutput("mpgtime"))
     )
   )
 ))

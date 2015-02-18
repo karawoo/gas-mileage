@@ -11,8 +11,9 @@ shinyServer(function(input, output) {
   full_dat <- getURL("https://docs.google.com/spreadsheets/d/1WH65aJjlmhOWYMFkhDuKPcRa5mloOtsTCKxrF7erHgI/export?gid=0&format=csv") %>% 
     textConnection() %>%
     read.csv(header = TRUE) %>%
-    mutate(date = as.Date(date, "%m/%d/%Y")) %>%
-    filter(remove != "y")  # remove problematic data
+    filter(remove != "y") %>%  # remove problematic data
+    mutate(date = as.Date(date, "%m/%d/%Y"), 
+           mpg = miles / gallons)
 
   ## Reactive data for plot
   dat_reac <- reactive({
@@ -40,4 +41,14 @@ shinyServer(function(input, output) {
       arrange(desc(mean_mpg))
   })
   
+  ## Gas mileage over time
+  output$mpgtime <- renderPlot({
+    ggplot(full_dat, aes(x = date, y = mpg, color = driving_type)) +
+      geom_point(size = 5) +
+      scale_color_manual(values = wes_palette("Darjeeling", 3), 
+                         guide_legend(title = "Driving type")) + 
+      ggtitle("Gas mileage over time") + 
+      ylab("miles per gallon") +
+      ylim(0, 40)
+  })
 })
