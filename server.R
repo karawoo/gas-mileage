@@ -43,7 +43,7 @@ shinyServer(function(input, output) {
   
   ## Gas mileage over time
   output$mpgtime <- renderPlot({
-    ggplot(full_dat, aes(x = date, y = mpg, color = driving_type)) +
+    ggplot(dat_reac(), aes(x = date, y = mpg, color = driving_type)) +
       geom_point(size = 5) +
       scale_color_manual(values = wes_palette("Darjeeling", 3), 
                          guide_legend(title = "Driving type")) + 
