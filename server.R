@@ -15,6 +15,10 @@ shinyServer(function(input, output) {
     mutate(date = as.Date(date, "%m/%d/%Y"), 
            mpg = miles / gallons)
 
+  ## Service dates
+  service <- as.Date(c("2014-06-14", "2014-09-20", "2015-01-20", "2015-05-06",
+                       "2015-07-21", "2016-01-15"))
+  
   ## Reactive data for plot
   dat_reac <- reactive({
     filter(full_dat, driving_type %in% input$drivetype)
@@ -46,7 +50,8 @@ shinyServer(function(input, output) {
     ggplot(dat_reac(), aes(x = date, y = mpg, color = driving_type)) +
       geom_point(size = 5) +
       scale_color_manual(values = wes_palette("Darjeeling", 3), 
-                         guide_legend(title = "Driving type")) + 
+                         guide_legend(title = "Driving type")) +
+      ## geom_vline(xintercept = as.numeric(service)) +
       ggtitle("Gas mileage over time") + 
       ylab("miles per gallon") +
       ylim(0, 40)
