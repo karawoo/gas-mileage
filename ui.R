@@ -8,10 +8,12 @@ shinyUI(pageWithSidebar(
   
   ## Choose driving type(s)
   sidebarPanel(
-    checkboxGroupInput("drivetype", label = h3("Driving type"),
-                       choices = list("City" = "City",
+    checkboxGroupInput("drivetype", 
+                       label = h3("Driving type"),
+                       choices = c("City" = "City",
                                       "Highway" = "Highway", 
-                                      "Mix" = "Mix"))
+                                      "Mix" = "Mix"),
+                       selected = c("City", "Highway", "Mix"))
   ),
   
   ## Show plot and table summarizing gas mileage
