@@ -1,20 +1,19 @@
 
 library("shiny")
-library("RCurl")
-library("dplyr")
-library("ggplot2")
+library("tidyverse")
 library("wesanderson")
+library("googlesheets")
 
 shinyServer(function(input, output) {
 
   ## Download data
-  full_dat <- getURL("https://docs.google.com/spreadsheets/d/1WH65aJjlmhOWYMFkhDuKPcRa5mloOtsTCKxrF7erHgI/export?gid=0&format=csv") %>% 
-    textConnection() %>%
-    read.csv(header = TRUE) %>%
-    filter(remove != "y") %>%  # remove problematic data
-    mutate(date = as.Date(date, "%m/%d/%Y"), 
-           mpg = miles / gallons)
+  sheet <- gs_url("https://docs.google.com/spreadsheets/d/1WH65aJjlmhOWYMFkhDuKPcRa5mloOtsTCKxrF7erHgI/pub?output=csv") %>%
+    gs_read()
 
+  full_dat <- sheet %>%
+    filter(remove != "y" | is.na(remove)) %>%
+    mutate(mpg = miles / gallons)
+  
   ## Service dates
   service <- as.Date(c("2014-06-14", "2014-09-20", "2015-01-20", "2015-05-06",
                        "2015-07-21", "2016-01-15"))
