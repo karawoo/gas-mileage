@@ -13,6 +13,14 @@ shinyServer(function(input, output) {
   full_dat <- sheet %>%
     filter(remove != "y" | is.na(remove)) %>%
     mutate(mpg = miles / gallons)
+
+  ## Set ggplot2 theme
+  theme_set(theme_minimal() +
+            theme(axis.text = element_text(size = 14),
+                  axis.title = element_text(size = 16),
+                  legend.text = element_text(size = 14),
+                  legend.title = element_text(size = 16),
+                  plot.title = element_text(size = 18)))
   
   ## Service dates
   service <- as.Date(c("2014-06-14", "2014-09-20", "2015-01-20", "2015-05-06",
@@ -30,10 +38,12 @@ shinyServer(function(input, output) {
       scale_color_manual(values = wes_palette("Darjeeling", 3), 
                          guide_legend(title = "Driving type")) +
       ggtitle("Miles per gallon") +
-      ylab("miles driven") +
+      ylab("Miles driven") +
+      xlab("Gallons") +
       ylim(190, 420) + 
       xlim(7, 13) +
-      coord_fixed(ratio = 0.015)
+      coord_fixed(ratio = 0.015) +
+      theme(legend.position = "bottom")
   })
 
   ## Summary of gas mileage by driving type
@@ -52,7 +62,9 @@ shinyServer(function(input, output) {
                          guide_legend(title = "Driving type")) +
       ## geom_vline(xintercept = as.numeric(service)) +
       ggtitle("Gas mileage over time") + 
-      ylab("miles per gallon") +
-      ylim(0, 40)
+      ylab("Miles per gallon") +
+      xlab("Date") +
+      ylim(0, 40) +
+      theme(legend.position = "bottom")
   })
 })
