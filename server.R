@@ -59,8 +59,8 @@ shinyServer(function(input, output) {
       ggtitle("Miles per gallon") +
       ylab("Miles driven") +
       xlab("Gallons") +
-      ylim(190, 420) + 
-      xlim(7, 13) +
+      ylim(extendrange(full_dat$miles)[1], extendrange(full_dat$miles)[2]) +
+      xlim(extendrange(full_dat$gallons)[1], extendrange(full_dat$gallons)[2]) +
       coord_fixed(ratio = 0.015) +
       theme(legend.position = "bottom")
   })
