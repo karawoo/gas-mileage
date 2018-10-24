@@ -15,16 +15,28 @@ shinyServer(function(input, output) {
     mutate(mpg = miles / gallons)
 
   ## Set ggplot2 theme
-  theme_set(theme_minimal() +
-            theme(axis.text = element_text(size = 14),
-                  axis.title = element_text(size = 16),
-                  legend.text = element_text(size = 14),
-                  legend.title = element_text(size = 16),
-                  plot.title = element_text(size = 18)))
+  theme_set(
+    theme_minimal() +
+      theme(
+        axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16),
+        plot.title = element_text(size = 18)
+      )
+  )
   
-  ## Service dates
-  service <- as.Date(c("2014-06-14", "2014-09-20", "2015-01-20", "2015-05-06",
-                       "2015-07-21", "2016-01-15"))
+  ## Service dates -- not currently used
+  service <- as.Date(
+    c(
+      "2014-06-14",
+      "2014-09-20",
+      "2015-01-20",
+      "2015-05-06",
+      "2015-07-21",
+      "2016-01-15"
+    )
+  )
   
   ## Reactive data for plot
   dat_reac <- reactive({
@@ -35,8 +47,10 @@ shinyServer(function(input, output) {
   output$mpgplot <- renderPlot({
     ggplot(dat_reac(), aes(x = gallons, y = miles, color = driving_type)) + 
       geom_point(size = 5) + 
-      scale_color_manual(values = wes_palette("Darjeeling", 3), 
-                         guide_legend(title = "Driving type")) +
+      scale_color_manual(
+        values = wes_palette("Darjeeling", 3),
+        guide_legend(title = "Driving type")
+      ) +
       ggtitle("Miles per gallon") +
       ylab("Miles driven") +
       xlab("Gallons") +
@@ -58,8 +72,10 @@ shinyServer(function(input, output) {
   output$mpgtime <- renderPlot({
     ggplot(dat_reac(), aes(x = date, y = mpg, color = driving_type)) +
       geom_point(size = 5) +
-      scale_color_manual(values = wes_palette("Darjeeling", 3), 
-                         guide_legend(title = "Driving type")) +
+      scale_color_manual(
+        values = wes_palette("Darjeeling", 3),
+        guide_legend(title = "Driving type")
+      ) +
       ## geom_vline(xintercept = as.numeric(service)) +
       ggtitle("Gas mileage over time") + 
       ylab("Miles per gallon") +
