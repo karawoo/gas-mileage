@@ -43,12 +43,17 @@ shinyServer(function(input, output) {
     filter(full_dat, driving_type %in% input$drivetype)
   })
 
+  ## Create color palette and ensure the same color is always used for the same
+  ## driving type
+  my_palette <- as.character(wes_palette("Darjeeling1", 3))
+  names(my_palette) <- c("City", "Highway", "Mix")
+
   ## Plot
   output$mpgplot <- renderPlot({
     ggplot(dat_reac(), aes(x = gallons, y = miles, color = driving_type)) + 
       geom_point(size = 5) + 
       scale_color_manual(
-        values = wes_palette("Darjeeling", 3),
+        values = my_palette,
         guide_legend(title = "Driving type")
       ) +
       ggtitle("Miles per gallon") +
@@ -73,7 +78,7 @@ shinyServer(function(input, output) {
     ggplot(dat_reac(), aes(x = date, y = mpg, color = driving_type)) +
       geom_point(size = 5) +
       scale_color_manual(
-        values = wes_palette("Darjeeling", 3),
+        values = my_palette,
         guide_legend(title = "Driving type")
       ) +
       ## geom_vline(xintercept = as.numeric(service)) +
