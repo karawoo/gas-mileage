@@ -86,6 +86,7 @@ shinyServer(function(input, output) {
       ylab("Miles per gallon") +
       xlab("Date") +
       ylim(0, 40) +
+      xlim(min(full_dat$date) - 1, Sys.Date()) +
       theme(legend.position = "bottom")
   })
 })
